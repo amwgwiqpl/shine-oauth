@@ -1,0 +1,29 @@
+{
+  "groups": [
+    {
+      "name": "oauth",
+      "type": "com.shine.web.autoconfigure.oauth.OAuthProperties",
+      "sourceType": "com.shine.web.autoconfigure.oauth.OAuthProperties"
+    }, {
+      "name": "oauth.resourceserver",
+      "type": "com.shine.web.autoconfigure.oauth.OAuthProperties$ResourceServer",
+      "sourceType": "com.shine.web.autoconfigure.oauth.OAuthProperties",
+      "sourceMethod": "getResourceServer()"
+    }
+  ],
+  "properties": [
+  	{
+      "name": "oauth.clientname",
+      "type": "java.lang.String",
+      "sourceType": "com.shine.web.autoconfigure.oauth.OAuthProperties",
+      "defaultValue": "default",
+      "description": "OAuth Server name"
+    }, {
+      "name": "oauth.resourceserver.uri",
+      "type": "java.lang.String",
+      "sourceType": "com.shine.web.autoconfigure.oauth.OAuthProperties$ResourceServer",
+      "defaultValue": "http://localhost:8080",
+      "description": "OAuth resource Server URI"
+    }
+  ]
+}

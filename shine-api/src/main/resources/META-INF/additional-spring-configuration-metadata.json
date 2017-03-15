@@ -1,0 +1,7 @@
+{
+	"properties": {
+		"name": "oauth.resourceserver.uri",
+		"type": "java.lang.String",
+		"description": "OAuth resource Server URI"
+	}
+}
