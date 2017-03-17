@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.shine.mapper.DeveloperMapper;
+import com.shine.web.mapper.DeveloperMapper;
 
 @Service("developerService")
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)

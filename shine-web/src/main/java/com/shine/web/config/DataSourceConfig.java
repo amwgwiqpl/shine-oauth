@@ -31,7 +31,7 @@ import com.shine.web.config.DataSourceConfig.DruidDataSourceProperties;
 
 @Configuration
 @EnableTransactionManagement
-@MapperScan("com.shine.mapper")
+@MapperScan("com.shine.web.mapper")
 @EnableConfigurationProperties({DataSourceProperties.class, DruidDataSourceProperties.class})
 @AutoConfigureAfter(MybatisAutoConfiguration.class)
 public class DataSourceConfig implements TransactionManagementConfigurer {

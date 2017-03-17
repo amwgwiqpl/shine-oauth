@@ -1,6 +1,6 @@
-package com.shine.mapper;
+package com.shine.web.mapper;
 
-import com.shine.model.Developer;
+import com.shine.web.model.Developer;
 
 import tk.mybatis.mapper.common.Mapper;
 

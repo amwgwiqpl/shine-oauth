@@ -1,4 +1,4 @@
-package com.shine.model;
+package com.shine.web.model;
 
 import java.util.ArrayList;
 import java.util.Collection;

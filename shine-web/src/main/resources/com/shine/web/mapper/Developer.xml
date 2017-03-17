@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 						"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.shine.mapper.DeveloperMapper">
+<mapper namespace="com.shine.web.mapper.DeveloperMapper">
 
 	<sql id="allColumns">
 		id as id,
@@ -10,7 +10,7 @@
 		grant_types as grantTypes 
 	</sql>
 
-	<select id="queryByClientId" resultType="com.shine.model.Developer">
+	<select id="queryByClientId" resultType="com.shine.web.model.Developer">
 		select 
 		<include refid="allColumns" /> 
 		from

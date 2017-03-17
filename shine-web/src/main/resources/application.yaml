@@ -30,8 +30,8 @@ security:
     resource:
       service-id: client
 mybatis:
-  mapper-locations: classpath*:com/shine/mapper/*.xml
-  type-aliases-package: com.shine.mapper
+  mapper-locations: classpath*:com/shine/web/mapper/*.xml
+  type-aliases-package: com.shine.web.mapper
 mapper:
   not-empty: false
   identity: MYSQL
@@ -43,5 +43,3 @@ pagehelper:
   reasonable: true
   supportMethodsArguments: true
   params: count=countSql
-logging:
-  config: logback.xml
