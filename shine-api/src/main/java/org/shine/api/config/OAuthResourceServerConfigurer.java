@@ -54,8 +54,6 @@ public class OAuthResourceServerConfigurer extends ResourceServerConfigurerAdapt
         .authorizeRequests().anyRequest().authenticated()
         .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     // @formatter:on
-
-
   }
 
 

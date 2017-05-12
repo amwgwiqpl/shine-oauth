@@ -24,74 +24,82 @@ import org.springframework.security.oauth2.provider.approval.JdbcApprovalStore;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStoreSerializationStrategy;
 
 import com.shine.web.config.wrapper.DefaultOAuth2RequestFactoryWrapper;
+import com.shine.web.config.wrapper.JsonSerializationStrategy;
 
 @Configuration
 @EnableAuthorizationServer
 @EnableConfigurationProperties(ResourceServerProperties.class)
 public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-  @Autowired
-  private AuthenticationManager authenticationManager;
+	@Autowired
+	private AuthenticationManager authenticationManager;
 
-  @Autowired
-  private DataSource dataSource;
+	@Autowired
+	private DataSource dataSource;
 
-  @Autowired
-  private RedisConnectionFactory factory;
-  @Autowired
-  @Qualifier("developerService")
-  private ClientDetailsService clientDetailsService; // 开发者帐号
-  @Autowired
-  private UserDetailsService userDetailsService; // 使用者用户帐号
+	@Autowired
+	private RedisConnectionFactory factory;
+	@Autowired
+	@Qualifier("developerService")
+	private ClientDetailsService clientDetailsService; // 开发者帐号
+	@Autowired
+	private UserDetailsService userDetailsService; // 使用者用户帐号
 
-  @Autowired
-  private ResourceServerProperties resourceServerProperties;
+	@Autowired
+	private ResourceServerProperties resourceServerProperties;
 
-  @Bean
-  public TokenStore tokenStore() {
-    return new RedisTokenStore(factory);
-  }
+	@Bean
+	public RedisTokenStoreSerializationStrategy redisTokenStoreSerializationStrategy() {
+		return new JsonSerializationStrategy();
+	}
 
-  @Bean
-  public ApprovalStore approvalStore() {
-    return new JdbcApprovalStore(dataSource);
-  }
+	@Bean
+	public TokenStore tokenStore() {
+		RedisTokenStore redisTokenStore = new RedisTokenStore(factory);
+		redisTokenStore.setSerializationStrategy(redisTokenStoreSerializationStrategy());
 
-  @Bean
-  public OAuth2RequestFactory oAuth2RequestFactory() {
-    return new DefaultOAuth2RequestFactoryWrapper(this.clientDetailsService);
-    
-  }
+		return redisTokenStore;
+	}
 
-  @Bean
-  @Primary
-  public DefaultTokenServices tokenServices() {
-    DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
-    defaultTokenServices.setTokenStore(tokenStore());
-    defaultTokenServices.setSupportRefreshToken(true);
-    return defaultTokenServices;
-  }
+	@Bean
+	public ApprovalStore approvalStore() {
+		return new JdbcApprovalStore(dataSource);
+	}
 
-  @Override
-  public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-    // TODO Auto-generated method stub
-    clients.withClientDetails(clientDetailsService)
-        .withClient(this.resourceServerProperties.getServiceId());
-  }
+	@Bean
+	public OAuth2RequestFactory oAuth2RequestFactory() {
+		return new DefaultOAuth2RequestFactoryWrapper(this.clientDetailsService);
+	}
 
-  @Override
-  public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-    // TODO Auto-generated method stub
-    endpoints.requestFactory(this.oAuth2RequestFactory())
-        .pathMapping("/oauth/confirm_access", "/oauth/confirmAccess")
-        .authenticationManager(this.authenticationManager).tokenStore(this.tokenStore())
-        .userDetailsService(this.userDetailsService).approvalStore(this.approvalStore());
-  }
+	@Bean
+	@Primary
+	public DefaultTokenServices tokenServices() {
+		DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
+		defaultTokenServices.setTokenStore(tokenStore());
+		defaultTokenServices.setSupportRefreshToken(true);
+		return defaultTokenServices;
+	}
 
-  @Override
-  public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-    security.allowFormAuthenticationForClients();
-  }
+	@Override
+	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+		// TODO Auto-generated method stub
+		clients.withClientDetails(clientDetailsService).withClient(this.resourceServerProperties.getServiceId());
+	}
+
+	@Override
+	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+		// TODO Auto-generated method stub
+		endpoints.requestFactory(this.oAuth2RequestFactory())
+				.pathMapping("/oauth/confirm_access", "/oauth/confirmAccess")
+				.authenticationManager(this.authenticationManager).tokenStore(this.tokenStore())
+				.userDetailsService(this.userDetailsService).approvalStore(this.approvalStore());
+	}
+
+	@Override
+	public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+		security.allowFormAuthenticationForClients();
+	}
 }
