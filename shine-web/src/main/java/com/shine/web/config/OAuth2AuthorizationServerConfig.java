@@ -93,7 +93,7 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 		// TODO Auto-generated method stub
 		endpoints.requestFactory(this.oAuth2RequestFactory())
-				.pathMapping("/oauth/confirm_access", "/oauth/confirmAccess")
+				// .pathMapping("/oauth/confirm_access", "/oauth/confirmAccess")
 				.authenticationManager(this.authenticationManager).tokenStore(this.tokenStore())
 				.userDetailsService(this.userDetailsService).approvalStore(this.approvalStore());
 	}
