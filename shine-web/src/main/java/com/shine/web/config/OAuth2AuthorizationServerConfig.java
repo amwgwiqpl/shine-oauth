@@ -22,12 +22,14 @@ import org.springframework.security.oauth2.provider.OAuth2RequestFactory;
 import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.security.oauth2.provider.approval.JdbcApprovalStore;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStoreSerializationStrategy;
 
 import com.shine.web.config.wrapper.DefaultOAuth2RequestFactoryWrapper;
 import com.shine.web.config.wrapper.JsonSerializationStrategy;
+import com.shine.web.config.wrapper.MemberTokenEnhancer;
 
 @Configuration
 @EnableAuthorizationServer
@@ -70,6 +72,11 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
 	}
 
 	@Bean
+	public TokenEnhancer tokenEnhancer() {
+		return new MemberTokenEnhancer();
+	}
+
+	@Bean
 	public OAuth2RequestFactory oAuth2RequestFactory() {
 		return new DefaultOAuth2RequestFactoryWrapper(this.clientDetailsService);
 	}
@@ -95,7 +102,8 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
 		endpoints.requestFactory(this.oAuth2RequestFactory())
 				// .pathMapping("/oauth/confirm_access", "/oauth/confirmAccess")
 				.authenticationManager(this.authenticationManager).tokenStore(this.tokenStore())
-				.userDetailsService(this.userDetailsService).approvalStore(this.approvalStore());
+				.userDetailsService(this.userDetailsService).approvalStore(this.approvalStore())
+				.tokenEnhancer(tokenEnhancer());
 	}
 
 	@Override
