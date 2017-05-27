@@ -61,7 +61,7 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
 	@Bean
 	public TokenStore tokenStore() {
 		RedisTokenStore redisTokenStore = new RedisTokenStore(factory);
-		redisTokenStore.setSerializationStrategy(redisTokenStoreSerializationStrategy());
+		// redisTokenStore.setSerializationStrategy(redisTokenStoreSerializationStrategy());
 
 		return redisTokenStore;
 	}

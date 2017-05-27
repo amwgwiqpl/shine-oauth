@@ -17,138 +17,156 @@ import org.springframework.util.StringUtils;
 
 import com.google.common.collect.Sets;
 
+import tk.mybatis.mapper.annotation.ColumnType;
+
 @Table(name = "oc_developer")
 public class Developer implements ClientDetails {
 
-  private static final long serialVersionUID = 7318058928169089456L;
-  @Id
-  private long id;
+	private static final long serialVersionUID = 7318058928169089456L;
+	@Id
+	private long id;
 
-  private String clientId;
-  private String clientSecret;
+	private String clientId;
+	private String clientSecret;
 
-  @Column(name = "grant_types")
-  private String grantTypes;
+	// @ColumnType(typeHandler)
+	// private Set<String> scope;
 
-  public long getId() {
-    return id;
-  }
+	@Column(name = "grant_types")
+	private String grantTypes;
 
-  public void setId(long id) {
-    this.id = id;
-  }
+	public long getId() {
+		return id;
+	}
 
-  public void setClientId(String clientId) {
-    this.clientId = clientId;
-  }
+	public void setId(long id) {
+		this.id = id;
+	}
 
-  public void setClientSecret(String clientSecret) {
-    this.clientSecret = clientSecret;
-  }
+	public void setClientId(String clientId) {
+		this.clientId = clientId;
+	}
 
-  public void setGrantTypes(String grantTypes) {
-    this.grantTypes = grantTypes;
-  }
+	public void setClientSecret(String clientSecret) {
+		this.clientSecret = clientSecret;
+	}
 
-  public Developer() {
-    this.clientId = "";
-    this.clientSecret = "";
-    this.grantTypes = "";
-  }
+	public void setGrantTypes(String grantTypes) {
+		this.grantTypes = grantTypes;
+	}
 
-  public Developer(String clientId, String clientSecret, String grantTypes) {
-    this();
-    this.clientId = clientId;
-    this.clientSecret = clientSecret;
-    this.grantTypes = grantTypes;
-  }
+	public Developer() {
+		this.clientId = "";
+		this.clientSecret = "";
+		this.grantTypes = "";
+	}
 
-  @Override
-  public String getClientId() {
-    // TODO Auto-generated method stub
-    return this.clientId;
-  }
+	public Developer(String clientId, String clientSecret, String grantTypes) {
+		this();
+		this.clientId = clientId;
+		this.clientSecret = clientSecret;
+		this.grantTypes = grantTypes;
+	}
 
-  @Override
-  public Set<String> getResourceIds() {
-    // TODO Auto-generated method stub
-    return Sets.newHashSet();
-  }
+	@Override
+	public String getClientId() {
+		// TODO Auto-generated method stub
+		return this.clientId;
+	}
 
-  @Override
-  public boolean isSecretRequired() {
-    // TODO Auto-generated method stub
-    return true;
-  }
+	@Override
+	public Set<String> getResourceIds() {
+		// TODO Auto-generated method stub
+		return Sets.newHashSet();
+	}
 
-  @Override
-  public String getClientSecret() {
-    // TODO Auto-generated method stub
-    return this.clientSecret;
-  }
+	@Override
+	public boolean isSecretRequired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
 
-  @Override
-  public boolean isScoped() {
-    // TODO Auto-generated method stub
-    return false;
-  }
+	@Override
+	public String getClientSecret() {
+		// TODO Auto-generated method stub
+		return this.clientSecret;
+	}
 
-  @Override
-  public Set<String> getScope() {
-    // TODO Auto-generated method stub
-    return null;
-  }
+	@Override
+	public boolean isScoped() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-  @Override
-  public Set<String> getAuthorizedGrantTypes() {
-    // TODO Auto-generated method stub
-    Set<String> grantTypeSet = Sets.newHashSet();
-    if (StringUtils.hasText(this.grantTypes)) {
-      StringTokenizer tokenizer = new StringTokenizer(this.grantTypes, ",");
-      while (tokenizer.hasMoreElements()) {
-        grantTypeSet.add(tokenizer.nextToken().trim());
-      }
-    }
-    System.out.println(" grantTypes = " + grantTypeSet);
-    return grantTypeSet;
-  }
+	@Override
+	public Set<String> getScope() {
+		Set<String> scopeSet = Sets.newHashSet();
+		// if (StringUtils.hasText(this.scope)) {
+		// StringTokenizer tokenizer = new StringTokenizer(this.scope, ",");
+		// while (tokenizer.hasMoreElements()) {
+		// scopeSet.add(tokenizer.nextToken().trim());
+		// }
+		// }
+		scopeSet.add("scope1");
+		scopeSet.add("scope2");
+		scopeSet.add("scope3");
+		return scopeSet;
+	}
 
-  @Override
-  public Set<String> getRegisteredRedirectUri() {
-    // TODO Auto-generated method stub
-    return null;
-  }
+	// public void setScope(Set<String> scope) {
+	// this.scope = scope;
+	// }
 
-  @Override
-  public Collection<GrantedAuthority> getAuthorities() {
-    GrantedAuthority authority = new SimpleGrantedAuthority("USER");
-    Collection<GrantedAuthority> authorities = new ArrayList<>();
-    authorities.add(authority);
-    return authorities;
-  }
+	@Override
+	public Set<String> getAuthorizedGrantTypes() {
+		// TODO Auto-generated method stub
+		Set<String> grantTypeSet = Sets.newHashSet();
+		if (StringUtils.hasText(this.grantTypes)) {
+			StringTokenizer tokenizer = new StringTokenizer(this.grantTypes, ",");
+			while (tokenizer.hasMoreElements()) {
+				grantTypeSet.add(tokenizer.nextToken().trim());
+			}
+		}
+		System.out.println(" grantTypes = " + grantTypeSet);
+		return grantTypeSet;
+	}
 
-  @Override
-  public Integer getAccessTokenValiditySeconds() {
-    // TODO Auto-generated method stub
-    return null;
-  }
+	@Override
+	public Set<String> getRegisteredRedirectUri() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-  @Override
-  public Integer getRefreshTokenValiditySeconds() {
-    // TODO Auto-generated method stub
-    return null;
-  }
+	@Override
+	public Collection<GrantedAuthority> getAuthorities() {
+		GrantedAuthority authority = new SimpleGrantedAuthority("USER");
+		Collection<GrantedAuthority> authorities = new ArrayList<>();
+		authorities.add(authority);
+		return authorities;
+	}
 
-  @Override
-  public boolean isAutoApprove(String scope) {
-    // TODO Auto-generated method stub
-    return false;
-  }
+	@Override
+	public Integer getAccessTokenValiditySeconds() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-  @Override
-  public Map<String, Object> getAdditionalInformation() {
-    // TODO Auto-generated method stub
-    return null;
-  }
+	@Override
+	public Integer getRefreshTokenValiditySeconds() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isAutoApprove(String scope) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Map<String, Object> getAdditionalInformation() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
