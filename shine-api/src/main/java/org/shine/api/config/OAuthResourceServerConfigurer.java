@@ -1,5 +1,6 @@
 package org.shine.api.config;
 
+import org.shine.api.filter.OAuth2TokenProcessingFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,11 +16,13 @@ import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 
 @Configuration
 @EnableResourceServer
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class OAuthResourceServerConfigurer extends ResourceServerConfigurerAdapter {
+	private OAuth2TokenProcessingFilter oAuth2TokenFilter;
 
 	@Autowired
 	private RedisConnectionFactory factory;
@@ -47,9 +50,14 @@ public class OAuthResourceServerConfigurer extends ResourceServerConfigurerAdapt
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
+
+		this.oAuth2TokenFilter = new OAuth2TokenProcessingFilter();
+		this.oAuth2TokenFilter.setTokenServices(tokenServices());
+
 		// @formatter:off
 		http.httpBasic().disable().csrf().disable().authorizeRequests().anyRequest().authenticated().and()
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+				.addFilterAfter(this.oAuth2TokenFilter, AbstractPreAuthenticatedProcessingFilter.class);
 		// @formatter:on
 	}
 
